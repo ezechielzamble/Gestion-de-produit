@@ -78,11 +78,7 @@ class CreateProd extends Component {
     onSubmit(e) {
         e.preventDefault();
         Swal.fire('Produit ajouté !')
-       /*  console.log(`Form submitted:`);
-        console.log(`Produit Nom: ${this.state.produit_nom}`);
-        console.log(`Produit Marque: ${this.state.produit_marque}`);
-        console.log(`Produit Prix: ${this.state.produit_prix}`);
-        console.log(`Produit Quantite: ${this.state.produit_quantite}`); */
+      
 
     const newProduit = {
 
