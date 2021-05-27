@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/liste-produits.component.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/liste-produits.component.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {Component} from 'react';
+/* import { Link } from 'react-router-dom';
+ */
+import "bootstrap/dist/css/bootstrap.min.css" ;
+import axios from 'axios';
+import Swal from 'sweetalert2';
+/* import { remove } from '../../BackEnd/produit.model';
+ *//* import { deleteOne } from '../../src/components/liste-produits.component';
+ */
+
+
+const Produit = props => {
+
+        
+   return (
+        &lt;tr>
+            &lt;td className={props.produit.rupture_stock ? 'completed' : ''}>{props.produit.produit_nom}&lt;/td>
+            &lt;td className={props.produit.rupture_stock ? 'completed' : ''}>{props.produit.produit_marque}&lt;/td>
+            &lt;td className={props.produit.rupture_stock ? 'completed' : ''}>{props.produit.produit_prix}&lt;/td>
+            &lt;td className={props.produit.rupture_stock ? 'completed' : ''}>{props.produit.produit_quantite}&lt;/td>
+            &lt;td >&lt;/td>
+           
+           {/*  &lt;td>               
+                 &lt;a className="btn btn-primary" href={"/edit/"+props.produit._id}>Edit&lt;/a>
+                
+            &lt;/td>
+            &lt;td>
+          
+                    &lt;button variant="danger" className="btn btn-primary" type="submit" id="removeBtn" style={{backgroundColor: 'red'}} onClick={() => props?.delete(props.produit._id)}
+                    >Supprimer&lt;/button>
+                
+    
+            &lt;/td> */}
+            &lt;td>
+          &lt;a className="btn btn-warning" href={"/edit/"+props.produit._id}>&lt;i className="fas fa-edit">&lt;/i>Modifier&lt;/a>
+          &amp;nbsp;
+          &lt;a className="btn btn-danger" onClick={() => props?.delete(props.produit._id)}>&lt;i className="far fa-times-circle">&lt;/i>Supprimer&lt;/a>
+      &lt;/td>
+        &lt;/tr>
+    
+    )
+
+}
+
+class ProdList extends Component{
+    
+    constructor(props) {
+        super(props);
+        this.state = {produit: []};
+        this.remove=this.remove.bind(this);
+        this.deleteOne=this.deleteOne.bind(this);
+
+    }
+
+ /**
+ * @property {Function} componentDidMount affiche tous les produits
+ * @returns Array&lt;produit>
+ */
+    componentDidMount() {
+        axios.get('http://localhost:4000/produit/')
+            .then(response => {
+                this.setState({ produit: response.data });
+            })
+            .catch(function (error){
+                console.log(error);
+            })
+    }
+
+    /**
+     * @property {Function} remove retire un produit de la liste des produits
+     * @param {id} id indentifiant designant un produit 
+     */
+    remove(id){
+        this.setState({
+            produit: this.state.produit.filter(prod=>prod._id!==id)
+        })
+    }
+       
+    /**
+     * @property {Function} deleteOne supprime un produit au travers son indentifiant
+     * @param {id} identifiant l'identifiant du produit à supprimer 
+     */
+     deleteOne(id) {
+         console.log('id',id);
+
+         Swal.fire({
+            title: 'Voulez vous supprimer ce produit ?',
+            text: 'Ce produit sera effacer de la liste des produits',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Oui, Supprimer',
+            cancelButtonText: 'Non, Annuler'
+          }).then((result) => {
+            if (result.isConfirmed) {
+            axios.delete('http://localhost:4000/produit/delete/'+id).then(res => {
+                
+            console.log(res.data); 
+                this.remove(id)
+            });
+              Swal.fire(
+                'Supprimer',
+                'Produit supprimé',
+                'Valider'
+              )
+           
+                
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              Swal.fire(
+                'Annuler',
+                'Aucun produit supprimé',
+                'erreur'
+              )
+            }
+          })
+
+          
+          };
+
+        /**
+         * @property {Function} filterContent filtre la liste des produits en se basant sur le texte saisi
+         * @param {produit}  Produit
+         * @param {searchTerm} searchTerm 
+         */
+            filterContent(produit, searchTerm){
+                const result = this.state.produit.filter((produit) => 
+                     produit.produit_nom.includes(searchTerm)||
+                     produit.produit_marque.includes(searchTerm)
+                     /* ||
+                     produit.produit_quantite.includes(searchTerm) */
+
+                    );
+
+                this.setState({ produit: result });
+            }
+              
+     /**
+     * @property {Function} handleTextSearch Se declenche lorqu'on fait une recherche
+     * @param {e} event intervient lorsqu'un événement est déclenché (saisie dans la barre de recherche)
+     * @returns Array
+     */
+            handleTextSearch = (e)=>{
+                const searchTerm = e.currentTarget.value;
+                if (searchTerm =='') {
+                    window.location.href="http://localhost:3000/";
+                }
+                axios.get('http://localhost:4000/produit/').then(response => {
+               this.filterContent(this.produit, searchTerm)
+            })
+            
+       }; 
+
+    render(){
+        return(
+            &lt;div className="container">
+
+                
+                &lt;div className="row">
+                    &lt;div className="col-lg-9 mt-2 mb2">
+                        &lt;h3>Liste des produits&lt;/h3>
+                    &lt;/div>
+                    &lt;div className="col-lg-3 mt-2 mb2">
+                        &lt;input className="form-control" type="search" placeholder="rechercher un produit" name="searchTerm" onChange={this.handleTextSearch}>&lt;/input>
+                    &lt;/div>
+                &lt;/div>
+
+&lt;table class="table">
+  &lt;thead>
+    &lt;tr>
+                            &lt;th scope="col">Nom&lt;/th>
+                            &lt;th scope="col">Marque&lt;/th>
+                            &lt;th scope="col">Prix (€)&lt;/th>
+                            &lt;th scope="col">Quantité&lt;/th>
+                            &lt;th scope="col">Disponibilité&lt;/th>
+                            
+                            &lt;th scope="col">Action&lt;/th>
+
+    &lt;/tr>
+  &lt;/thead>
+  &lt;tbody>
+  { this.state.produit.map((currentProduit, i)=>{
+      &lt;tr>
+      &lt;th scope="row">{i}&lt;/th>
+      &lt;td>{currentProduit.produit_nom}&lt;/td>
+      &lt;td>{currentProduit.produit_marque}&lt;/td>
+      &lt;td>{currentProduit.produit_prix}&lt;/td>
+      &lt;td>{currentProduit.produit_quantite}&lt;/td>
+      &lt;td>&lt;/td>
+      
+
+    &lt;/tr> 
+                            return (
+                                &lt;Produit delete={() => {this.deleteOne(currentProduit._id)} } produit={currentProduit} key={i}  />
+                                
+                            )
+                            
+
+                        })
+                      
+                        }
+     
+  
+  &lt;/tbody>
+&lt;/table>
+
+
+            &lt;/div>
+        )
+    }
+} 
+export default ProdList;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CreateProd.html">CreateProd</a></li><li><a href="EditProd.html">EditProd</a></li></ul><h3>Global</h3><ul><li><a href="global.html#studentName">studentName</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu May 27 2021 17:09:24 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

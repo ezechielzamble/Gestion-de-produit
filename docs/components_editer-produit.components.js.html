@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/editer-produit.components.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/editer-produit.components.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
+import axios from 'axios';
+
+class EditProd extends Component {
+
+
+
+    /**
+     * Constructeur permettant d'editer un produit
+     * @param {props} Constructeur  recupère les valeurs de saisis, les enregistre et initialise l'etat local
+     */
+   constructor(props) {
+        super(props);
+
+        this.onChangeProduitNom = this.onChangeProduitNom.bind(this);
+        this.onChangeProduitMarque = this.onChangeProduitMarque.bind(this);
+        this.onChangeProduitPrix = this.onChangeProduitPrix.bind(this);
+        this.onChangeProduitQuantite = this.onChangeProduitQuantite.bind(this);
+
+        this.onSubmit = this.onSubmit.bind(this);
+
+        this.state = {
+            produit_nom: '',
+            produit_marque: '',
+            produit_prix: '',
+            produit_quantite: '',
+            rupture_stock: false
+        }
+    }
+
+/**
+ * @property {Function} componentDidMount Permet d'éditer le produit dont l'id est passé en parametre
+ * @returns Array&lt;produit>
+ */
+    componentDidMount() {
+        axios.get('http://localhost:4000/produit/'+this.props.match.params.id)
+            .then(response => {
+                this.setState({
+                    produit_nom: response.data.produit_nom,
+                    produit_marque: response.data.produit_marque,
+                    produit_prix: response.data.produit_prix,
+                    produit_quantite: response.data.produit_quantite,
+                    rupture_stock: response.data.rupture_stock
+                })   
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+
+    /**
+     * @property {Function} onChangeProduitNom Se declenche lorqu'on saisi le nom d'un produit
+     * @param {Event} e événement
+     * @returns String
+     */
+    onChangeProduitNom(e) {
+        this.setState({
+            produit_nom: e.target.value
+        });
+    }
+
+      /**
+     * @property {Function} onChangeProduitMarque Se declenche lorqu'on saisi la marque d'un produit
+     * @param {e} onChangeProduitMarque  
+     * @returns String
+     */
+    onChangeProduitMarque(e) {
+        this.setState({
+            produit_marque: e.target.value
+        });
+    }
+
+      /**
+     * @property {Function} onChangeProduitPrix Se declenche lorqu'on saisi le prix d'un produit
+     * @param {e} onChangeProduitPrix  
+     * @returns number
+     */
+    onChangeProduitPrix(e) {
+        this.setState({
+            produit_prix: e.target.value
+        });
+    }
+
+      /**
+     * @property {Function} onChangeProduitStock Se declenche lorqu'on selectionne l'etat d'un produit
+     * @param {e} onChangeProduitStock  
+     * @returns boolean
+     */
+    onChangeProduitStock(e) {
+        this.setState({
+            produit_stock: e.target.value
+        });
+    }
+
+      /**
+     * @property {Function} onChangeProduitQuantite Se declenche lorqu'on saisi la quantité d'un produit
+     * @param {e} onChangeProduitQuantite  
+     * @returns number
+     */
+    onChangeProduitQuantite(e) {
+        this.setState({
+            produit_quantite: e.target.value
+        });
+    }
+
+      /**
+     * @property {Function} onSubmit Se declenche que lorque l'evenement est traité 
+     * @param {e} onSubmit   
+     */
+    onSubmit(e) {
+        e.preventDefault();
+        
+       /*  console.log(`Form submitted:`);
+        console.log(`Produit Nom: ${this.state.produit_nom}`);
+        console.log(`Produit Marque: ${this.state.produit_marque}`);
+        console.log(`Produit Prix: ${this.state.produit_prix}`);
+        console.log(`Produit Quantite: ${this.state.produit_quantite}`); */
+
+        
+      /**
+       * Modification d'un nouveau produit avec les données prechargés
+       * Voir {@link new Produit}
+       */
+    const newProduit = {
+
+            produit_nom: this.state.produit_nom,
+            produit_marque: this.state.produit_marque,
+            produit_prix: this.state.produit_prix,
+            produit_stock: this.state.produit_stock,
+            produit_quantite: this.state.produit_quantite,
+
+    }; 
+
+    
+
+        /**
+         * @description modifie un produit et affiche la liste des produits
+         */
+        axios.post('http://localhost:4000/produit/update/'+this.props.match.params.id, newProduit)
+            .then(res => console.log(res.data));
+        
+        this.props.history.push('/');
+    }
+
+/**
+ * @property {Function} render elle examine l'etat local et renvoi le même rendu à chaque fois qu'elle est appelée
+ * @returns Le formulaire de modification avec les infos préchargées
+ */
+    render() {
+        return (
+            &lt;div style={{backgroundColor: 'white', width: '400px', padding: '10px', margin: '5px auto'}}>
+                &lt;h3 align="center">Modifier un produit&lt;/h3>
+                &lt;form onSubmit={this.onSubmit}>
+                    &lt;div className="form-group"> 
+                        &lt;label>Nom: &lt;/label>
+                        &lt;input  type="text"
+                                className="form-control"
+                                value={this.state.produit_nom}
+                                onChange={this.onChangeProduitNom}
+                                />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                        &lt;label>Marque: &lt;/label>
+                        &lt;input 
+                                type="text" 
+                                className="form-control"
+                                value={this.state.produit_marque}
+                                onChange={this.onChangeProduitMarque}
+                                />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                        &lt;label>Prix: &lt;/label>
+                        &lt;input 
+                                type="number" 
+                                className="form-control"
+                                value={this.state.produit_prix}
+                                onChange={this.onChangeProduitPrix}
+                                />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                        &lt;label>Quantité: &lt;/label>
+                        &lt;input 
+                                type="number" 
+                                className="form-control"
+                                value={this.state.produit_quantite}
+                                onChange={this.onChangeProduitQuantite}
+                                />
+                    &lt;/div>
+                   
+
+                    &lt;br />
+
+                    &lt;div className="form-group">
+                        &lt;input type="submit" value="Modifier Produit" onClick={() => window.location.href="http://localhost:3000/"} className="btn btn-primary" />
+                    &lt;/div>
+                &lt;/form>
+            &lt;/div>
+        )
+    }
+}
+export default EditProd;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CreateProd.html">CreateProd</a></li><li><a href="EditProd.html">EditProd</a></li></ul><h3>Global</h3><ul><li><a href="global.html#studentName">studentName</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu May 27 2021 17:09:24 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

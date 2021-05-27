@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/créer-produit.component.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/créer-produit.component.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
+import axios from 'axios';
+import Swal from 'sweetalert2'
+
+class CreateProd extends Component {
+   
+     /**
+     * Constructeur permettant d'editer un produit
+     * @param {props} Constructeur  recupère les valeurs de saisis, les enregistre et initialise l'etat local
+     */
+    constructor(props) {
+        super(props);
+
+        this.onChangeProduitNom = this.onChangeProduitNom.bind(this);
+        this.onChangeProduitMarque = this.onChangeProduitMarque.bind(this);
+        this.onChangeProduitPrix = this.onChangeProduitPrix.bind(this);
+        this.onChangeProduitQuantite = this.onChangeProduitQuantite.bind(this);
+
+        this.onSubmit = this.onSubmit.bind(this);
+
+        this.state = {
+            produit_nom: '',
+            produit_marque: '',
+            produit_prix: '',
+            produit_quantite: '',
+            rupture_stock: false
+        }
+    }
+
+     /**
+     * @property {Function} onChangeProduitNom Se declenche lorqu'on saisi le nom d'un produit
+     * @param {Event} e événement
+     * @returns String
+     */
+    onChangeProduitNom(e) {
+        this.setState({
+            produit_nom: e.target.value
+        });
+    }
+
+     /**
+     * @property {Function} onChangeProduitMarque Se declenche lorqu'on saisi la marque d'un produit
+     * @param {e} onChangeProduitMarque  
+     * @returns String
+     */
+    onChangeProduitMarque(e) {
+        this.setState({
+            produit_marque: e.target.value
+        });
+    }
+
+      /**
+     * @property {Function} onChangeProduitPrix Se declenche lorqu'on saisi le prix d'un produit
+     * @param {e} onChangeProduitPrix  
+     * @returns number
+     */
+    onChangeProduitPrix(e) {
+        this.setState({
+            produit_prix: e.target.value
+        });
+    }
+
+      /**
+     * @property {Function} onChangeProduitQuantite Se declenche lorqu'on saisi la quantité d'un produit
+     * @param {e} onChangeProduitQuantite  
+     * @returns number
+     */
+    onChangeProduitQuantite(e) {
+        this.setState({
+            produit_quantite: e.target.value
+        });
+    }
+
+    /**
+     * @property {Function} onSubmit Se declenche que lorque l'evenement est traité 
+     * @param {e} onSubmit   
+     */
+    onSubmit(e) {
+        e.preventDefault();
+        Swal.fire('Produit ajouté !')
+       /*  console.log(`Form submitted:`);
+        console.log(`Produit Nom: ${this.state.produit_nom}`);
+        console.log(`Produit Marque: ${this.state.produit_marque}`);
+        console.log(`Produit Prix: ${this.state.produit_prix}`);
+        console.log(`Produit Quantite: ${this.state.produit_quantite}`); */
+
+    const newProduit = {
+
+            produit_nom: this.state.produit_nom,
+            produit_marque: this.state.produit_marque,
+            produit_prix: this.state.produit_prix,
+            produit_quantite: this.state.produit_quantite,
+            rupture_stock: this.state.rupture_stock
+
+    }; 
+
+         axios.post('http://localhost:4000/produit/add', newProduit)
+            .then(res => console.log(res.data));
+
+        this.setState({
+            produit_nom: '',
+            produit_marque: '',
+            produit_prix: '',
+            produit_quantite: '',
+            rupture_stock: false
+        }) 
+    }
+
+    render() {
+        return (
+            &lt;div style={{backgroundColor: 'white', width: '400px', padding: '10px', margin: '5px auto'}}>
+                &lt;h3>Créer un nouveau Produit&lt;/h3>
+                &lt;form onSubmit={this.onSubmit} >
+                    &lt;div className="form-group"> 
+                        &lt;label>Nom : &lt;/label>
+                        &lt;input type="text"
+                        placeholder="ex: Eau Minérale"
+                                className="form-control"
+                                value={this.state.produit_nom}
+                                onChange={this.onChangeProduitNom}
+                                required
+                                />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                        &lt;label>Marque : &lt;/label>
+                        &lt;input 
+                                type="text" 
+                                placeholder="ex: Celeste"
+                                className="form-control"
+                                value={this.state.produit_marque}
+                                onChange={this.onChangeProduitMarque}
+                                required
+                                />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                        &lt;label>Prix : &lt;/label>
+                        &lt;input 
+                                type="number" 
+                                placeholder="ex: 15 €"
+                                className="form-control"
+                                value={this.state.produit_prix}
+                                onChange={this.onChangeProduitPrix}
+                                required
+                                />
+                    &lt;/div>
+                    &lt;div className="form-group">
+                        &lt;label>Quantité : &lt;/label>
+                        &lt;input 
+                                type="number" 
+                                placeholder="ex: 10"
+                                className="form-control"
+                                value={this.state.produit_quantite}
+                                onChange={this.onChangeProduitQuantite}
+                                required
+                                />
+                    &lt;/div>
+                   
+&lt;br/>
+                    &lt;div className="form-group">
+                        &lt;input type="submit" value="Créer produit" className="btn btn-primary" />
+                    &lt;/div>
+                &lt;/form>
+            &lt;/div>
+        )
+    }
+}
+
+export default CreateProd;       
+   </code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CreateProd.html">CreateProd</a></li><li><a href="EditProd.html">EditProd</a></li></ul><h3>Global</h3><ul><li><a href="global.html#studentName">studentName</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Thu May 27 2021 17:09:24 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
