@@ -1,7 +1,6 @@
-################################
-##     Liste des Scripts      ##
-################################
-In the project directory, you can run:
+
+## Liste des Scripts
+Dans le dossier du projet, vous pouvez executer
 
 ### `npm start`
 
