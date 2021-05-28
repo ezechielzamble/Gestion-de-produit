@@ -1,4 +1,4 @@
-## Dans ce projet nous avons deux branches
+# Dans ce projet nous avons deux branches
 - Ouvrez la branche master afin d'avoir acces au code du projet
 
 # Gestion-de-produit
