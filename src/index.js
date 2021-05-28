@@ -12,11 +12,7 @@ ReactDOM.render(
 );
 
 const f= require('../src/components/editer-produit.components');
-/**
- * Student name
- * @type {string}
- */
-const studentName= 'John Doe';
+
 
 
 
