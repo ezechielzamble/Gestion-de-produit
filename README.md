@@ -1,4 +1,8 @@
 
+
+## Resultat du rendu
+Dans le dossier etape, vous trouverez les images des différentes étapes du test de l'application
+
 ## Liste des Scripts
 Dans le dossier du projet, vous pouvez executer
 
@@ -55,4 +59,11 @@ dans le cas contraire veuillez installer mongoDB en suivant ce lien
 -  Exécuter le script qui lance le front
  `npm run start`
  
+ ## Pour voir la documentation
  
+- la documentation du Backend est faite en "swagger"
+lancer ` http://localhost:4000/api-docs/ ` pour visualiser la documentation
+
+- la documentation du front est faite en "JsDoc"
+lancer ` http://127.0.0.1:5500/docs/index.html ` pour visualiser la documentation
+
