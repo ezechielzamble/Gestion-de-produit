@@ -1,70 +1,60 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
+################################
+##     Liste des Scripts      ##
+################################
 In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Demarre le serveur du Back si nous sommes dans le dossier du Back.\
+Démarre le serveur du Front si nous sommes dans le dossier du Front
+Ouvrir [http://localhost:3000](http://localhost:3000) pour voir l'affichage.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Lance le gestionnaire de tests dans le mode de veille interactif.\
 
-### `npm run build`
+### la première étape est de télécharger le projet
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+en cliquant sur le bouton *"clone"* vous pouvez cloner le projet ou le télécharger le fichier ZIP
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### pour cloner le projet
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`git clone https://github.com/ezechielzamble/Gestion-de-produit.git`
+`git checkout master`
 
-### `npm run eject`
+voilà, vous êtes maintenant sur la bonne branche
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## pour lancer le serveur du front
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- on commence par installer le gestionnaire des packages de Node
+`npm install`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+-  pour exécuter le script qui lance le front
+ `npm run start`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## pour lancer le serveur du back
 
-## Learn More
+il faut se rendre dans le dossier du Back
+`cd BackEnt`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Installez Nodemon, Nodemon surveillera les changements de fichiers et redémarrera le processus NodeJS. Cela permet un développement et des tests plus rapides.
+`npm install -g nodemon`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Assurez vous d'avoir installé mongoDB sur votre poste de travail
+dans le cas contraire veuillez installer mongoDB en suivant ce lien
+` https://docs.mongodb.com/manual/administration/install-community/ `
 
-### Code Splitting
+- demarrer mongoDB
+`mongod`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- L'étape suivante consiste à créer l'instance de la base de données MongoDB. Nous nous connectons donc au serveur de la base de données en utilisant le client MondoDB
+`mongo`
 
-### Analyzing the Bundle Size
+- Ensuite, au lieu d'ajouter manuellement les dépendances pour Express, Mongoose et body-parser, utilisez à nouveau npm pour les installer et les ajouter au fichier package.json 
+`npm install express mongoose body-parser cors --save`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-  Exécuter le script qui lance le front
+ `npm run start`
+ 
+ 
