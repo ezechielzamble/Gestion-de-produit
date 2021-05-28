@@ -3,15 +3,14 @@
 Dans le dossier du projet, vous pouvez executer
 
 ### `npm start`
-
 Demarre le serveur du Back si nous sommes dans le dossier du Back.\
 Démarre le serveur du Front si nous sommes dans le dossier du Front
 Ouvrir [http://localhost:3000](http://localhost:3000) pour voir l'affichage.
 
 
 ### `npm test`
-
 Lance le gestionnaire de tests dans le mode de veille interactif.\
+Commande à executer avant de demarrer le serveur du back
 
 ### la première étape est de télécharger le projet
 
